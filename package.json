@@ -9,7 +9,8 @@
   "type": "module",
   "main": "./js/index.js",
   "scripts": {
-    "start": "node ./js/index.js"
+    "start": "node ./js/index.js",
+    "withgraph": "node ./js/withgraph.js"
   },
   "dependencies": {
     "@langchain/core": "^0.3.17",

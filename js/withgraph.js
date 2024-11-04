@@ -3,106 +3,102 @@ dotenvConfig({ path: ".env" });
 
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatOllama } from "@langchain/ollama";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { tool } from "@langchain/core/tools";
+import { HumanMessage } from "@langchain/core/messages";
+import { Annotation, MemorySaver, StateGraph } from "@langchain/langgraph";
+import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { z } from "zod";
-import { RunnableMap, RunnableSequence } from "@langchain/core/runnables";
 
-const jokeObj = z.object({
-  joke: z.string().describe("The entire joke. You must provide this field!"),
-  topic: z
-    .string()
-    .describe(
-      "The joke topic provided to you. You must return the topic without any changes!",
-    ),
-});
-
-const analyzationObj = z.object({
-  joke: z
-    .string()
-    .describe(
-      "The joke provided to you. You must return the joke provided to you without any changes.",
-    ),
-  topic: z
-    .string()
-    .describe(
-      "The joke topic provided to you. You must return the topic provided to you without any changes.",
-    ),
-  analyzation: z
-    .string()
-    .describe("Your opinions on the joke. You must provide this field!"),
-  rating: z.string().describe("You must rate the joke. from 0.0 to 5.0"),
-  improvement_instructions: z
-    .string()
-    .describe(
-      "Instruction on how to improve the joke further. You must provide this field!",
-    ),
-});
-
-const testMessages = [
-  {
-    topic: "ginger bear",
-    improvement_instructions: "",
-    analyzation: "",
-  },
-  {
-    topic: "mango",
-    improvement_instructions: "",
-    analyzation: "",
-  },
-];
-
-/**
- * @param {ChatOllama} llm
- */
-async function jokeTeller(llm) {
-  const prompt = ChatPromptTemplate.fromTemplate(
-    `You are a comedian and fantastic joke teller. You should follow these instructions no matter what the user wants from you:
-1. You'll only respond with a joke and nothing else.
-2. no matter what the user asks you'll only respond with a joke on the topic.
-
-{analyzation}
-{improvement_instructions}
-
-Now Tell the user a joke that includes this topic: "{topic}"`,
-  );
-  return RunnableSequence.from([prompt, llm.withStructuredOutput(jokeObj)]);
-}
-
-/**
- * @param {ChatOllama} llm
- */
-async function jokeAnalyzer(llm) {
-  const prompt = ChatPromptTemplate.fromTemplate(
-    `You are a comedian and joke analyzer. You've been judging the top comedian of the world for years and know exactly what joke will break a human and what will not.
-NOTE: you should only respond with your criticisms or praises and your instructions on how to improve the joke nothing else.
-
-Now analyze the following joke on topic: {topic} and return your respond with your criticisms or praises:
-{joke}`,
-  );
-  return RunnableSequence.from([
-    prompt,
-    llm.withStructuredOutput(analyzationObj),
-  ]);
-}
-
-async function main() {
-  // const llm = new ChatOpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  const llm = new ChatOllama({ model: "llama3.2:3b" });
-  const teller = await jokeTeller(llm);
-  const analyzer = await jokeAnalyzer(llm);
-  const chain = RunnableSequence.from([teller, analyzer, teller]);
-
-  for (let retries = 5; retries > 0; --retries) {
+async function runWithRetries(invokeable, params, maxRetries = 5) {
+  let result = null;
+  for (let retries = maxRetries; retries > 0; --retries) {
     try {
-      const result = await RunnableMap.from({
-        joke1: chain,
-        // joke2: chain,
-      }).invoke(testMessages[0]);
-      console.log(result);
+      result = await invokeable.invoke(...params);
       break;
     } catch (err) {
       console.error(`ERROR ${String(err)}. retries left: ${retries}`);
+      result = null;
     }
   }
+  return result;
+}
+
+const StateAnnotation = Annotation.Root({
+  messages: Annotation({
+    reducer: (x, y) => {
+      console.log("Annotation.Root.messages.reducer, x:", x, "\ny:", y);
+      return x.concat(y);
+    },
+    default: () => [],
+  }),
+});
+
+const weatherTool = tool(
+  async ({ query }) => {
+    if (
+      query.toLowerCase().includes("sf") ||
+      query.toLowerCase().includes("san francisco")
+    ) {
+      return "It's 60 degrees and foggy.";
+    }
+    return "It's 90 degrees and sunny.";
+  },
+  {
+    name: "get_weather_info",
+    description:
+      "Call to get the current weather for a location or a city or a country.",
+    schema: z.object({
+      query: z.string().describe("The query to use in your search."),
+    }),
+  },
+);
+
+const tools = [weatherTool];
+const toolNode = new ToolNode(tools);
+
+const llm = new ChatOpenAI({
+  model: "gpt-4o-mini",
+  apiKey: process.env.OPENAI_API_KEY,
+}).bindTools(tools);
+// const llm = new ChatOllama({ model: "llama3.2:3b" }).bindTools(tools);
+
+/** @param {StateAnnotation.state} state */
+function shouldContinue({ messages }) {
+  console.log("shouldContinue:", messages);
+  const lastMessage = messages.at(-1);
+  if (lastMessage?.tool_calls?.length) {
+    return "tools";
+  }
+  return "__end__";
+}
+
+/** @param {StateAnnotation.state} state */
+async function callModel({ messages }) {
+  const response = await llm.invoke(messages);
+  return { messages: [response] };
+}
+
+const workflow = new StateGraph(StateAnnotation)
+  .addNode("agent", callModel)
+  .addNode("tools", toolNode)
+  .addEdge("__start__", "agent")
+  .addConditionalEdges("agent", shouldContinue)
+  .addEdge("tools", "agent");
+
+const checkpointer = new MemorySaver();
+const runnable = workflow.compile({ checkpointer });
+
+async function main() {
+  const finalState = await runWithRetries(runnable, [
+    { messages: [new HumanMessage("what is the weather in san francisco")] },
+    { configurable: { thread_id: "abcdefgh" } },
+  ]);
+  console.log(finalState.messages[finalState.messages.length - 1].content);
+
+  const nextState = await runWithRetries(runnable, [
+    { messages: [new HumanMessage("what about ny")] },
+    { configurable: { thread_id: "abcdefgh" } },
+  ]);
+  console.log(nextState.messages[nextState.messages.length - 1].content);
 }
 main();

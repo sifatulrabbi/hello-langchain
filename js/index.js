@@ -152,7 +152,7 @@ async function runWithRetries(invokeable, params, maxRetries = 5) {
   return result;
 }
 
-async function main() {
+async function main(msg) {
   // const llm = new ChatOpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const llm = new ChatOllama({ model: "llama3.2:3b" });
   const decisionMakerChain = decisionMaker(llm);
@@ -165,15 +165,18 @@ async function main() {
     jokeTellerRunnable,
   ]);
 
-  let result = await runWithRetries(decisionMakerChain, [testMessages[0]]);
+  let result = await runWithRetries(decisionMakerChain, [msg]);
   console.log("decision:", result);
 
   switch (result?.request_type) {
     case "joke":
-      result = await await runWithRetries(jokeChain, [testMessages[0]]);
+      result = await await runWithRetries(jokeChain, [msg]);
       break;
     case "poem":
-      result = await await runWithRetries(poemChain, [testMessages[0]]);
+      result = await await runWithRetries(poemChain, [msg]);
+      break;
+    case "other":
+      result = { message: "You're request cannot be completed." };
       break;
     default:
       result = null;
@@ -186,4 +189,6 @@ async function main() {
     console.log(result);
   }
 }
-main();
+main(testMessages[0]);
+main(testMessages[1]);
+main(testMessages[2]);
