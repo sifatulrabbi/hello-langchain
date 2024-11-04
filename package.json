@@ -1,0 +1,21 @@
+{
+  "name": "ts",
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "description": "",
+  "version": "1.0.0",
+  "keywords": [],
+  "type": "module",
+  "main": "./js/index.js",
+  "scripts": {
+    "start": "node ./js/index.js"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.17",
+    "@langchain/ollama": "^0.1.1",
+    "@langchain/openai": "^0.3.11",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  }
+}
