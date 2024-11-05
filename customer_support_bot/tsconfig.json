@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true, // -> set to true if using commonjs (which you do for node)
+    "resolveJsonModule": true,
+    "lib": ["es5", "es6", "dom"],
+    "module": "commonjs",
+    "allowJs": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    // "sourceRoot": "/",
+    "target": "es5",
+    "removeComments": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "preserveConstEnums": true,
+    // "inlineSources": true,
+    // "inlineSourceMap": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@portal-server/*": ["./src/*"],
+      "src/*": ["./src/*"]
+    }
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules/**/*",
+    ".serverless/**/*",
+    ".webpack/**/*",
+    "_warmup/**/*",
+    ".vscode/**/*"
+  ]
+}

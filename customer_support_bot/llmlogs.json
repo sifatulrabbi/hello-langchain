@@ -1,0 +1,244 @@
+[
+  {
+    "initial_support": {
+      "messages": {
+        "lc": 1,
+        "type": "constructor",
+        "id": [
+          "langchain_core",
+          "messages",
+          "AIMessage"
+        ],
+        "kwargs": {
+          "lc_serializable": true,
+          "lc_kwargs": {
+            "lc_serializable": true,
+            "lc_kwargs": {
+              "content": "Please hold for a moment while I transfer you to our billing team for assistance with your refund request.",
+              "tool_calls": [],
+              "invalid_tool_calls": [],
+              "additional_kwargs": {},
+              "response_metadata": {
+                "usage": {
+                  "prompt_tokens": 111,
+                  "completion_tokens": 20,
+                  "total_tokens": 131,
+                  "prompt_tokens_details": {
+                    "cached_tokens": 0
+                  },
+                  "completion_tokens_details": {
+                    "reasoning_tokens": 0,
+                    "accepted_prediction_tokens": 0,
+                    "rejected_prediction_tokens": 0
+                  }
+                },
+                "system_fingerprint": "fp_0ba0d124f1"
+              },
+              "id": "chatcmpl-AQDueiif9zDM2WJge1LNSr86PabUI"
+            },
+            "lc_namespace": [
+              "langchain_core",
+              "messages"
+            ],
+            "content": "Please hold for a moment while I transfer you to our billing team for assistance with your refund request.",
+            "additional_kwargs": {},
+            "response_metadata": {
+              "usage": {
+                "prompt_tokens": 111,
+                "completion_tokens": 20,
+                "total_tokens": 131,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0,
+                  "accepted_prediction_tokens": 0,
+                  "rejected_prediction_tokens": 0
+                }
+              },
+              "system_fingerprint": "fp_0ba0d124f1"
+            },
+            "id": "chatcmpl-AQDueiif9zDM2WJge1LNSr86PabUI",
+            "tool_calls": [],
+            "invalid_tool_calls": [],
+            "usage_metadata": {
+              "output_tokens": 20,
+              "input_tokens": 111,
+              "total_tokens": 131,
+              "input_token_details": {
+                "cache_read": 0
+              },
+              "output_token_details": {
+                "reasoning": 0
+              }
+            }
+          },
+          "lc_namespace": [
+            "langchain_core",
+            "messages"
+          ],
+          "content": "Please hold for a moment while I transfer you to our billing team for assistance with your refund request.",
+          "additional_kwargs": {},
+          "response_metadata": {
+            "tokenUsage": {
+              "promptTokens": 111,
+              "completionTokens": 20,
+              "totalTokens": 131
+            },
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_tokens": 111,
+              "completion_tokens": 20,
+              "total_tokens": 131,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            },
+            "system_fingerprint": "fp_0ba0d124f1"
+          },
+          "id": "chatcmpl-AQDueiif9zDM2WJge1LNSr86PabUI",
+          "tool_calls": [],
+          "invalid_tool_calls": [],
+          "usage_metadata": {
+            "output_tokens": 20,
+            "input_tokens": 111,
+            "total_tokens": 131,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {
+              "reasoning": 0
+            }
+          }
+        }
+      },
+      "nextRepresentative": "BILLING"
+    }
+  },
+  {
+    "billing_support": {
+      "messages": {
+        "lc": 1,
+        "type": "constructor",
+        "id": [
+          "langchain_core",
+          "messages",
+          "AIMessage"
+        ],
+        "kwargs": {
+          "lc_serializable": true,
+          "lc_kwargs": {
+            "lc_serializable": true,
+            "lc_kwargs": {
+              "content": "I'm transferring you now to our billing team, who will assist you with your refund for order #182818. Thank you for your patience!",
+              "tool_calls": [],
+              "invalid_tool_calls": [],
+              "additional_kwargs": {},
+              "response_metadata": {
+                "usage": {
+                  "prompt_tokens": 158,
+                  "completion_tokens": 28,
+                  "total_tokens": 186,
+                  "prompt_tokens_details": {
+                    "cached_tokens": 0
+                  },
+                  "completion_tokens_details": {
+                    "reasoning_tokens": 0,
+                    "accepted_prediction_tokens": 0,
+                    "rejected_prediction_tokens": 0
+                  }
+                },
+                "system_fingerprint": "fp_0ba0d124f1"
+              },
+              "id": "chatcmpl-AQDugibCjFBLf75s1WvrsysTgRTiw"
+            },
+            "lc_namespace": [
+              "langchain_core",
+              "messages"
+            ],
+            "content": "I'm transferring you now to our billing team, who will assist you with your refund for order #182818. Thank you for your patience!",
+            "additional_kwargs": {},
+            "response_metadata": {
+              "usage": {
+                "prompt_tokens": 158,
+                "completion_tokens": 28,
+                "total_tokens": 186,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0,
+                  "accepted_prediction_tokens": 0,
+                  "rejected_prediction_tokens": 0
+                }
+              },
+              "system_fingerprint": "fp_0ba0d124f1"
+            },
+            "id": "chatcmpl-AQDugibCjFBLf75s1WvrsysTgRTiw",
+            "tool_calls": [],
+            "invalid_tool_calls": [],
+            "usage_metadata": {
+              "output_tokens": 28,
+              "input_tokens": 158,
+              "total_tokens": 186,
+              "input_token_details": {
+                "cache_read": 0
+              },
+              "output_token_details": {
+                "reasoning": 0
+              }
+            }
+          },
+          "lc_namespace": [
+            "langchain_core",
+            "messages"
+          ],
+          "content": "I'm transferring you now to our billing team, who will assist you with your refund for order #182818. Thank you for your patience!",
+          "additional_kwargs": {},
+          "response_metadata": {
+            "tokenUsage": {
+              "promptTokens": 158,
+              "completionTokens": 28,
+              "totalTokens": 186
+            },
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_tokens": 158,
+              "completion_tokens": 28,
+              "total_tokens": 186,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            },
+            "system_fingerprint": "fp_0ba0d124f1"
+          },
+          "id": "chatcmpl-AQDugibCjFBLf75s1WvrsysTgRTiw",
+          "tool_calls": [],
+          "invalid_tool_calls": [],
+          "usage_metadata": {
+            "output_tokens": 28,
+            "input_tokens": 158,
+            "total_tokens": 186,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {
+              "reasoning": 0
+            }
+          }
+        }
+      },
+      "nextRepresentative": "REFUND"
+    }
+  }
+]
